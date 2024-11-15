@@ -1,4 +1,4 @@
-### WebSockets README
+# WebSockets
 
 ---
 
