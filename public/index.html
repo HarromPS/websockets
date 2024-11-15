@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat App</title>
+</head>
+<body>
+    <h1>Hello Chat app</h1>
+    <!-- <button onclick="createConnection()">Create WS connection</button> -->
+
+    <input type="text" id="inputField" placeholder="Enter a message"></input>
+    <button id="sendBtn">Send</button>
+
+    <div>
+        <ul id="messages"></ul>
+    </div>
+
+    <!-- it takes to load the socket.io-client, 
+     which exposes an io global (and the endpoint GET /socket.io/socket.io.js), and then connect. -->
+    <script src="/socket.io/socket.io.js"></script> <!-- this script is handle using Server function -->
+    <script>
+        // function createConnection(){
+        //     const socket=io();  // a new socket connection with backend everytime it is clicked
+        // }
+        
+        const socket = io();
+        const input = document.getElementById("inputField");
+        const send = document.getElementById("sendBtn");
+        const messages = document.getElementById("messages");
+        
+        // listen the broadcast 
+        socket.on("server-message",(message)=>{
+            const listItem = document.createElement("li");
+            listItem.textContent = message;
+            messages.appendChild(listItem);
+        });
+
+        // add a listener to send a message 
+        send.addEventListener("click",(e)=>{
+            const message = input.value;
+            console.log(message)
+            socket.emit("client-message", message);   // send to the server 
+        })
+
+    </script>
+</body>
+</html>
